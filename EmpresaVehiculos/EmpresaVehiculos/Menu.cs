@@ -20,7 +20,7 @@ namespace EmpresaVehiculos
 
             #region
             Vehiculo vehiculo1 = new Vehiculo("001","A", 1200);
-            Vehiculo vehiculo2 = new Vehiculo("002", "C", 2300);
+            Vehiculo vehiculo2 = new Vehiculo("002", "B", 2300);
             Dictionary<Vehiculo, int> diccionarioStock = new Dictionary<Vehiculo, int>
             {
                 {vehiculo1,3 },
@@ -33,12 +33,27 @@ namespace EmpresaVehiculos
 
             Persona persona1 = new Persona("P0001", new List<string> { "B" });
             Institucion institucion1 = new Institucion("I0001", new List<string> { "A", "B", "C" });
+            Accesorio accesorio1 = new Accesorio("A001", 210);
+            Accesorio accesorio2 = new Accesorio("A002", 2864);
 
             listaClientes.Add(persona1);
             listaClientes.Add(institucion1);
 
             listaVehiculos.Add(vehiculo1);
             listaVehiculos.Add(vehiculo2);
+
+            listaAccesorios.Add(accesorio1);
+            listaAccesorios.Add(accesorio2);
+
+
+            listaSucursal.Add(sucursal1);
+
+
+            Transaccion transaccion1 = new Transaccion(1, persona1, vehiculo1,
+                sucursal1, listaAccesorios,2000,4);
+
+            listaTransacciones.Add(transaccion1);
+
 
             #endregion
 
@@ -47,18 +62,22 @@ namespace EmpresaVehiculos
             }
         }
 
-        public void RealizaTransaccion(Cliente cliente)
+        public Transaccion RealizaTransaccion(Cliente cliente)
         {
+            Console.Clear();
+            int precio = 0;
 
+            Console.WriteLine("INICIO TRANSACCION");
             Console.WriteLine("Seleccione ID del Vehiculo:");
             ImprimirVehiculos();
             Console.Write(">: ");
             string idVehiculo = Console.ReadLine();
 
             Vehiculo vehiculo = (listaVehiculos.Find(x => x.id == idVehiculo));
+            precio += vehiculo.precio;
 
             Console.WriteLine("Seleccione ID de Sucursal:");
-            ImprimirVehiculos();
+            ImprimirSucursales();
             Console.Write(">: ");
             string idSucursal = Console.ReadLine();
 
@@ -66,34 +85,53 @@ namespace EmpresaVehiculos
 
             List<Accesorio> listaAccesorioArrendar = new List<Accesorio>();
 
+
+
             ImprimirAccesorios();
+            Console.WriteLine("0 Para detener");
             while (true)
             {
+                errorAccesorio:
                 string idAccesorio = Console.ReadLine();
                 if (idAccesorio == "0") { break; }
                 Accesorio accesorio = (listaAccesorios.Find(x => x.id == idAccesorio));
-                listaAccesorios.Add(accesorio);
+
+                if (accesorio == null) { Console.WriteLine("Error");goto errorAccesorio; }
+                listaAccesorioArrendar.Add(accesorio);
+                precio += accesorio.precio;
 
                 
             }
 
+            Console.Write("Tiempo de arriendo (dias) >: ");
+            int tiempoArriendo =Convert.ToInt32(Console.ReadLine());
+
             bool manejable = cliente.Manejable(vehiculo.tipoVehiculo);
             bool stock = (sucursal.diccionarioStock[vehiculo] > 0);
 
-            int id = 999;
+            int id = 2;
 
             if (manejable && stock)
             {
                 Transaccion transaccion = new Transaccion(id, cliente,
-                    vehiculo, sucursal, listaAccesorioArrendar);
+                    vehiculo, sucursal, listaAccesorioArrendar,precio,tiempoArriendo);
 
                 listaTransacciones.Add(transaccion);
-                Console.WriteLine("Transaccion Exitosa!");
+                Console.WriteLine("Transaccion Exitosa!...");
+                Console.WriteLine(transaccion.id + transaccion.id);
+                ImprimirTransacciones();
+                Console.ReadKey();
+                return transaccion;
+
             }
             else
             {
-                Console.WriteLine("Transaccion Fallida!");
-                return;
+                Transaccion transaccion = new Transaccion(id, cliente,
+                 vehiculo, sucursal, listaAccesorioArrendar, precio,tiempoArriendo);
+
+                Console.WriteLine("Transaccion Fallida!...");
+                Console.ReadKey();
+                return transaccion;
             }
 
         }
@@ -102,7 +140,7 @@ namespace EmpresaVehiculos
         public void CommandInterface()
         {
             List<int> opcionesValidas = new List<int>() { 1, 2, 3, 4, 5, 6 };
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine("--Menu de Gestión--\n");
             Console.WriteLine("Selecciones:\n\n" +
                 "\t(1) Realizar Arriendo\n" +
@@ -129,25 +167,21 @@ namespace EmpresaVehiculos
             Console.WriteLine(op);
             if (op == 1)
             {
+                inicioOP1:
                 Console.Write("ID Cliente >: ");
                 string id = Console.ReadLine();
                 Cliente cliente = listaClientes.Find(x => x.id == id);
-                while (true)
+
+                if (!listaClientes.Contains(cliente))
                 {
-                    if (listaClientes.Contains(cliente))
-                    {
-                        RealizaTransaccion(cliente);
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("No existe cliente con ese id\nGenerar un nuevo cliente\n");
-                        CrearCliente();
-                    }
+                    Console.WriteLine("No existe cliente con ese id\nGenerar un nuevo cliente\n");
+                    CrearCliente();
+                    goto inicioOP1;
                 }
 
-                Console.WriteLine("\nVehiculo");
-                Console.ReadKey();
+                listaTransacciones.Add(RealizaTransaccion(cliente));
+
+
 
             }
 
@@ -235,48 +269,90 @@ namespace EmpresaVehiculos
             Console.WriteLine("Seleccione una opcion pra ver:\n" +
                 "\t(1) Clientes\n" +
                 "\t(2) Vehiculos\n" +
+                "\t(3) Transacciones\n" +
                 "");
             Console.Write("opcion >: ");
             string opcion = Console.ReadLine();
 
             if (opcion == "1") { ImprimirClientes(); }
             else if (opcion == "2") { ImprimirVehiculos(); }
+            else if (opcion == "3") { ImprimirTransacciones(); }
 
 
         }
 
+
+
+
+        public void ImprimirSucursales()
+        {
+            Console.WriteLine("--Mostrando Sucursales--");
+            foreach(Sucursal sucursal in listaSucursal)
+            {
+                Console.WriteLine($"ID: {sucursal.id}");
+            }
+        }
         public void ImprimirClientes()
         {
-            Console.Clear();
+            //Console.Clear();
+            Console.WriteLine("--Mostrando Clientes--");
             foreach (Cliente cliente in listaClientes)
             {
                 string stringPermisos = "";
                 foreach(string permiso in cliente.listaPermisos) { stringPermisos += " "+permiso; }
                 Console.WriteLine($"ID: {cliente.id}, Permisos: {stringPermisos}");
             }
-            Console.Write("Enter para continar...");
-            Console.ReadKey();
+            //Console.Write("Enter para continar...");
+            //Console.ReadKey();
         }
         public void ImprimirVehiculos()
         {
-            Console.Clear();
+            //Console.Clear();
+            Console.WriteLine("--Mostrando Vehiculos--");
             foreach(Vehiculo vehiculo in listaVehiculos)
             {
                 Console.WriteLine($"ID: {vehiculo.id} Permiso: {vehiculo.tipoVehiculo}" +
                     $" Precio: {vehiculo.precio}");
             }
-            Console.Write("Enter para continar...");
-            Console.ReadKey();
+            //Console.Write("Enter para continar...");
+            //Console.ReadKey();
         }
         public void ImprimirAccesorios()
         {
             foreach(Accesorio accesorio in listaAccesorios)
             {
+                Console.WriteLine("--Mostrando Accesorios--");
                 Console.WriteLine($"ID Accesorio: {accesorio.id} Precio: {accesorio.precio}");
             }
         }
 
-        
+        public void ImprimirTransacciones()
+        {
+            Console.WriteLine("--Mostrando Transacciones--");
+            foreach(Transaccion transaccion in listaTransacciones)
+            {
+                Console.WriteLine($"ID: {transaccion.id}\tFecha Transaccion: {transaccion.fechaInicioTransaccion.ToString()}\tFecha Termino Arriendo: {transaccion.fechaInicioTransaccion.AddDays(transaccion.tiempoArriendo).ToString()}" +
+                    $"\n\tCliente:" +
+                    $" {transaccion.cliente.id} Sucursal: {transaccion.sucursal.id}\n" +
+                    $"\tVehiculo: {transaccion.vehiculo.id}");
+
+                int c = 0;
+                    foreach(Accesorio accesorio in transaccion.listaAccesorio)
+                {
+                    c++;
+                    Console.WriteLine($"\t\tID Accesorio ({c}): {accesorio.id}");
+
+                }
+
+                Console.WriteLine($"\tPrecio: { transaccion.precio}");
+
+
+                Console.WriteLine();
+            }
+            Console.ReadKey();
+
+        }
+
 
     }
 }

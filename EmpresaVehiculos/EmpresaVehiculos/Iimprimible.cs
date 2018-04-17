@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmpresaVehiculos
 {
-    interface Iimprimible
+    interface IImprimible
     {
         void ImprimirInfo();
     }

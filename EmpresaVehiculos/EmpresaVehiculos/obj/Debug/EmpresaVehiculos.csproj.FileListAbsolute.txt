@@ -5,3 +5,10 @@ C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\Empresa
 C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.csproj.CoreCompileInputs.cache
 C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.exe
 C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.pdb
+C:\Users\MatíasCánepaGonzález\source\repos\car-rental-software-macanepa\EmpresaVehiculos\EmpresaVehiculos\bin\Debug\EmpresaVehiculos.exe.config
+C:\Users\MatíasCánepaGonzález\source\repos\car-rental-software-macanepa\EmpresaVehiculos\EmpresaVehiculos\bin\Debug\EmpresaVehiculos.exe
+C:\Users\MatíasCánepaGonzález\source\repos\car-rental-software-macanepa\EmpresaVehiculos\EmpresaVehiculos\bin\Debug\EmpresaVehiculos.pdb
+C:\Users\MatíasCánepaGonzález\source\repos\car-rental-software-macanepa\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.csprojResolveAssemblyReference.cache
+C:\Users\MatíasCánepaGonzález\source\repos\car-rental-software-macanepa\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.csproj.CoreCompileInputs.cache
+C:\Users\MatíasCánepaGonzález\source\repos\car-rental-software-macanepa\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.exe
+C:\Users\MatíasCánepaGonzález\source\repos\car-rental-software-macanepa\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.pdb
