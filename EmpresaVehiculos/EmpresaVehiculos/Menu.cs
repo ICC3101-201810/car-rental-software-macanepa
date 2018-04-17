@@ -462,9 +462,10 @@ namespace EmpresaVehiculos
         }
         public void ImprimirAccesorios()
         {
-            foreach(Accesorio accesorio in listaAccesorios)
+            Console.WriteLine("--Mostrando Accesorios--");
+
+            foreach (Accesorio accesorio in listaAccesorios)
             {
-                Console.WriteLine("--Mostrando Accesorios--");
                 Console.WriteLine($"ID Accesorio: {accesorio.id} Precio: {accesorio.precio}");
             }
         }

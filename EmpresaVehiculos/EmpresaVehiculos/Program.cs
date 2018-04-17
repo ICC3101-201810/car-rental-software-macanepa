@@ -21,7 +21,9 @@ namespace EmpresaVehiculos
                 C => Moto
                 D => Camion
                 E => Bus
-                F => Maquinaria*/
+                F => Maquinaria
+            
+             */
 
         }
     }
