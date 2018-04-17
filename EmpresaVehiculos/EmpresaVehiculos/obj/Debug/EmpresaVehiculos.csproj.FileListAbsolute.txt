@@ -1,0 +1,7 @@
+C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\bin\Debug\EmpresaVehiculos.exe.config
+C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\bin\Debug\EmpresaVehiculos.exe
+C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\bin\Debug\EmpresaVehiculos.pdb
+C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.csprojResolveAssemblyReference.cache
+C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.csproj.CoreCompileInputs.cache
+C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.exe
+C:\Users\Matias\source\repos\EmpresaVehiculos\EmpresaVehiculos\obj\Debug\EmpresaVehiculos.pdb
