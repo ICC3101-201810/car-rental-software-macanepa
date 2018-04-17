@@ -10,6 +10,7 @@ namespace EmpresaVehiculos
     {
         static void Main(string[] args)
         {
+            //Console.Beep(1200, 3000);
             Menu menu = new Menu();
             menu.Main();
 
