@@ -22,7 +22,7 @@ namespace EmpresaVehiculos
 
         public void Main()
         {
-
+            Console.Beep(800,500);
             Console.ForegroundColor = ConsoleColor.White;
 
             bool automatic;
@@ -35,7 +35,7 @@ namespace EmpresaVehiculos
             #region
             Vehiculo vehiculo1 = new Vehiculo("001", "A", 1200, false,false,true);
             Vehiculo vehiculo2 = new Vehiculo("002", "F", 2300,false,false,true);
-            Vehiculo vehiculo3 = new Vehiculo("003", "B", 2300);
+            Vehiculo vehiculo3 = new Vehiculo("003", "E", 2300);
             Vehiculo vehiculo4 = new Vehiculo("004", "A", 98610, true, true, true);
             Vehiculo vehiculo5 = new Vehiculo("005", "A", 990, false, false, true);
             Vehiculo vehiculo6 = new Vehiculo("006", "A", 253300, true, true, true);
@@ -101,6 +101,7 @@ namespace EmpresaVehiculos
 
         public void RealizaTransaccion(Cliente cliente)
         {
+
             Console.Clear();
             int precio = 0;
 
@@ -202,7 +203,7 @@ namespace EmpresaVehiculos
                 if (idAccesorio == "0") { break; }
                 Accesorio accesorio = (listaAccesorios.Find(x => x.id == idAccesorio));
 
-                if (accesorio == null) { Console.WriteLine("Error");goto errorAccesorio; }
+                if (accesorio == null) { Console.ForegroundColor = ConsoleColor.Red ; Console.WriteLine("Error");Console.Beep(); ;goto errorAccesorio; }
                 listaAccesorioArrendar.Add(accesorio);
                 precio += accesorio.precio;
 
@@ -245,7 +246,9 @@ namespace EmpresaVehiculos
                 if (cliente.GetType() == typeof(Persona))
                 {
                     manejable = false;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Persona No puede Arrendar!");
+                    Console.Beep();
                 }
 
                 if ((cliente.GetType() == typeof(Empresa)) ||
@@ -255,15 +258,15 @@ namespace EmpresaVehiculos
                     double probabilidad = (new Random()).NextDouble();
                     if ((cliente.GetType() == typeof(Empresa)))
                     {
-                        if (!(probabilidad <= 0.8)) { manejable = false; Console.WriteLine("SHIT!!"); }
+                        if (!(probabilidad <= 0.8)) { manejable = false; Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("Municipalidad No Ha Otorgado"); Console.Beep(); }
                     }
                     if ((cliente.GetType() == typeof(Organizacion)))
                     {
-                        if (!(probabilidad <= 0.35)) { manejable = false; }
+                        if (!(probabilidad <= 0.35)) { manejable = false; Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("Municipalidad No Ha Otorgado"); Console.Beep(); }
                     }
                     if ((cliente.GetType() == typeof(Institucion)))
                     {
-                        if (!(probabilidad <= 0.58)) { manejable = false; }
+                        if (!(probabilidad <= 0.58)) { manejable = false; Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("Municipalidad No Ha Otorgado"); Console.Beep(); }
                     }
                     Console.WriteLine("Probabilidad " + probabilidad.ToString());
                 }
@@ -293,6 +296,7 @@ namespace EmpresaVehiculos
                  vehiculo, sucursal, listaAccesorioArrendar, precio,tiempoArriendo);
 
                 Console.WriteLine("Transaccion Fallida!...");
+                Console.Beep();
                 Console.ReadKey();
                 //return transaccion;
             }
@@ -302,8 +306,10 @@ namespace EmpresaVehiculos
 
         public void CommandInterface()
         {
-            List<int> opcionesValidas = new List<int>() { 1, 2, 3, 4, 5, 6 ,7};
+            List<int> opcionesValidas = new List<int>() { 1, 2, 3, 4, 5, 6 ,7,8};
             //Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
+
             Console.WriteLine("--Menu de Gestión--\n");
             Console.WriteLine("Selecciones:\n\n" +
                 "\t(1) Realizar Arriendo\n" +
@@ -312,7 +318,9 @@ namespace EmpresaVehiculos
                 "\t(4) Crear Accesorio\n" +
                 "\t(5) Crear Sucursal\n" +
                 "\t(6) Mostrar Informacion\n" +
-                "\t(7) Salir\n");
+                "\t(7) Salir\n" +
+                "\n" +
+                "\t(8) MAGIC!!\n");
 
             Console.Write("\t>: ");
 
@@ -326,7 +334,7 @@ namespace EmpresaVehiculos
                 if (!opcionesValidas.Contains(opcion)) { return; }
                 op = opcion;
             }
-            catch { Console.WriteLine("Introduce una opcion valida...");
+            catch { Console.WriteLine("Introduce una opcion valida..."); Console.Beep();
                 Console.ReadKey();
                 Console.Clear();
             }
@@ -340,7 +348,9 @@ namespace EmpresaVehiculos
 
                 if (!listaClientes.Contains(cliente))
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("No existe cliente con ese id\nGenerar un nuevo cliente\n");
+                    Console.Beep();
                     CrearCliente();
                     goto inicioOP1;
                 }
@@ -370,6 +380,7 @@ namespace EmpresaVehiculos
 
             if (op == 7) { Environment.Exit(0); }
 
+            if (op == 8) { System.Diagnostics.Process.Start("https://matias.ma/nsfw/"); }
 
 
 
@@ -391,9 +402,9 @@ namespace EmpresaVehiculos
             try
             {
                 tipoCliente = Convert.ToInt32(Console.ReadLine());
-                if (!opciones.Contains(tipoCliente)) { Console.WriteLine("Opcion No Valida");return; }
+                if (!opciones.Contains(tipoCliente)) { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("Opcion No Valida"); Console.Beep(); return; }
             }
-            catch { Console.WriteLine("Opcion No Valida"); return; }
+            catch { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("Opcion No Valida"); Console.Beep(); return; }
             
 
 
@@ -444,7 +455,7 @@ namespace EmpresaVehiculos
 
             Console.Write("Tipo Permiso >: ");
             string tipoVehiculo = Console.ReadLine();
-            if (tipoVehiculo == "") { Console.WriteLine("Tipo Vehiculo No Valido!");return; }
+            if (tipoVehiculo == "") { Console.ForegroundColor = ConsoleColor.Red; Console.WriteLine("Tipo Vehiculo No Valido!"); Console.Beep(); return; }
 
 
             bool asientos = false;
