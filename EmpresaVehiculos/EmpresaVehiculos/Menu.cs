@@ -16,25 +16,45 @@ namespace EmpresaVehiculos
         List<Accesorio> listaAccesorios = new List<Accesorio>();
         List<int> listaIdTransaccion = new List<int>() { 1 };
 
+
+        //Dict<id_trans,Tupla<id_Cliente,vehiculo>>  esto va a ser para retornar un vehiculo arrendado
+        Dictionary<string, Tuple<string, Vehiculo>> dictArrendados = new Dictionary<string, Tuple<string, Vehiculo>>();
+
         public void Main()
         {
 
+            Console.ForegroundColor = ConsoleColor.White;
+
+            bool automatic;
+            Console.Write("Iniciar Con Datos Automaticos? (Y/N): ");
+            if (Console.ReadLine() == "Y"){automatic = true;}
+            else{ automatic = false; }
+
+            if (automatic == false) { goto noAuto; }
+
             #region
-            Vehiculo vehiculo1 = new Vehiculo("001","A", 1200);
-            Vehiculo vehiculo2 = new Vehiculo("002", "F", 2300);
+            Vehiculo vehiculo1 = new Vehiculo("001", "A", 1200, false,false,true);
+            Vehiculo vehiculo2 = new Vehiculo("002", "F", 2300,false,false,true);
             Vehiculo vehiculo3 = new Vehiculo("003", "B", 2300);
-            Vehiculo vehiculo4 = new Vehiculo("004", "E", 2300);
+            Vehiculo vehiculo4 = new Vehiculo("004", "A", 98610, true, true, true);
+            Vehiculo vehiculo5 = new Vehiculo("005", "A", 990, false, false, true);
+            Vehiculo vehiculo6 = new Vehiculo("006", "A", 253300, true, true, true);
+
             Dictionary<Vehiculo, int> diccionarioStock = new Dictionary<Vehiculo, int>
             {
                 {vehiculo1,3 },
                 {vehiculo2,8 },
                 {vehiculo3,8 },
-                {vehiculo4,8 }
+                {vehiculo4,8 },
+                {vehiculo5,8 },
+                {vehiculo6,8 },
+
             };
 
 
             Sucursal sucursal1 = new Sucursal("S001",
-                new List<Vehiculo>() { vehiculo1, vehiculo2 }, diccionarioStock);
+                new List<Vehiculo>() { vehiculo1, vehiculo2, vehiculo3, vehiculo4
+                , vehiculo5, vehiculo6}, diccionarioStock);
 
             Persona persona1 = new Persona("P0001", new List<string> { "B" });
             Empresa empresa1 = new Empresa("E0001", new List<string> { "F","A","E" });
@@ -53,6 +73,8 @@ namespace EmpresaVehiculos
             listaVehiculos.Add(vehiculo2);
             listaVehiculos.Add(vehiculo3);
             listaVehiculos.Add(vehiculo4);
+            listaVehiculos.Add(vehiculo5);
+            listaVehiculos.Add(vehiculo6);
 
 
             listaAccesorios.Add(accesorio1);
@@ -70,6 +92,8 @@ namespace EmpresaVehiculos
 
             #endregion
 
+            noAuto:
+
             while (true){
                 CommandInterface();
             }
@@ -80,13 +104,82 @@ namespace EmpresaVehiculos
             Console.Clear();
             int precio = 0;
 
+
+
+
             Console.WriteLine("INICIO TRANSACCION");
+
+
+            Console.Write("Selecciones Auto u otro Vehiculo (A/O) >: ");
+            string opAuto = Console.ReadLine();
+
+            if (opAuto == "A")
+            {
+
+                bool asientos = false;
+                bool dvd = false;
+                bool electrico = false;
+
+
+                Console.Write("Desea Agregar Corrida Extra de Asientos O Maletero grande? (C/M) >: ");
+                string opAsiento = Console.ReadLine();
+
+                Console.Write("Desea que posea DVD? (Y/N) >: ");
+                string opDVD = Console.ReadLine();
+
+                Console.Write("Desea que sea electrico? (Y/N) >: ");
+                string opElectrico = Console.ReadLine();
+
+                if (opAsiento == "C") { asientos = true; }
+                if (opDVD == "Y") { dvd = true; }
+                if (opElectrico == "Y") { electrico = true; }
+
+
+                List<Vehiculo> autosFiltrados1 =
+                    listaVehiculos.Where(x => x.corridaAsientoExtra == asientos).ToList<Vehiculo>();
+
+                List<Vehiculo> autosFiltrados2 =
+                    autosFiltrados1.Where(x => x.esElectrico == electrico).ToList<Vehiculo>();
+
+                List<Vehiculo> autosFiltrados3 =
+                    autosFiltrados2.Where(x => x.tieneDVD == dvd).ToList<Vehiculo>();
+
+
+                Console.WriteLine("--Mostrando Vehiculos--");
+
+                foreach (Vehiculo vehiculo1 in autosFiltrados3)
+                {
+                    if(vehiculo1.tipoVehiculo != "A") { continue; }
+                    Console.WriteLine($"ID: {vehiculo1.id}");
+
+                    Console.WriteLine($"\tCorrida Extra: {vehiculo1.corridaAsientoExtra}\n" +
+                    $"\tMaletero grande: {!vehiculo1.corridaAsientoExtra}\n" +
+                    $"\tElectrico: {vehiculo1.esElectrico}\n" +
+                    $"\tPosee DVD: {vehiculo1.tieneDVD}\n");
+
+                    Console.WriteLine($"ID: {vehiculo1.id} Permiso: {vehiculo1.tipoVehiculo}" +
+                        $" Precio: {vehiculo1.precio}\n");
+
+
+
+
+                }
+                Console.WriteLine("Seleccione ID del Vehiculo:");
+                goto afterPrintVehiculos;
+
+
+            }
+
+
             Console.WriteLine("Seleccione ID del Vehiculo:");
+
             ImprimirVehiculos();
+            afterPrintVehiculos:
             Console.Write(">: ");
             string idVehiculo = Console.ReadLine();
 
             Vehiculo vehiculo = (listaVehiculos.Find(x => x.id == idVehiculo));
+
             precio += vehiculo.precio;
 
             Console.WriteLine("Seleccione ID de Sucursal:");
@@ -345,10 +438,39 @@ namespace EmpresaVehiculos
             string tipoVehiculo = Console.ReadLine();
             if (tipoVehiculo == "") { Console.WriteLine("Tipo Vehiculo No Valido!");return; }
 
+
+            bool asientos = false;
+            bool dvd = false;
+            bool electrico = false;
+
+            if (tipoVehiculo == "A")
+            {
+                
+
+                Console.Write("Desea Agregar Corrida Extra de Asientos O Maletero grande? (C/M) >: ");
+                string opAsiento = Console.ReadLine();
+
+                Console.Write("Desea que posea DVD? (Y/N) >: ");
+                string opDVD = Console.ReadLine();
+
+                Console.Write("Desea que sea electrico? (Y/N) >: ");
+                string opElectrico = Console.ReadLine();
+
+                if (opAsiento == "C") { asientos = true; }
+                if (opDVD == "Y") { dvd = true; }
+                if (opElectrico == "Y") { electrico = true; }
+
+
+
+
+            }
+
+
+
             Console.Write("Precio >: ");
             int precio = Convert.ToInt32(Console.ReadLine());
 
-            listaVehiculos.Add(new Vehiculo(id, tipoVehiculo, precio));
+            listaVehiculos.Add(new Vehiculo(id, tipoVehiculo, precio,asientos,dvd,electrico));
             Console.WriteLine("Vehiculo Añadido Exitosamente");
             return;
 
@@ -374,15 +496,17 @@ namespace EmpresaVehiculos
             Console.Write("\nID Sucursal >: ");
             string id = Console.ReadLine();
 
+            Console.WriteLine("--Agregar Vehiculo a Sucursal--");
+
 
             ImprimirVehiculos();
 
             List<Vehiculo> listaVehiculosSucursal = new List<Vehiculo>();
             Console.WriteLine("Introduce ID Vehiculo: ");
             Dictionary<Vehiculo, int> dictVehiculoStock = new Dictionary<Vehiculo, int>();
-
             while (true)
             {
+                Console.WriteLine("Intoroduce (0) para dejar de agregar vehiculos.");
                 errorVehiculo:
                 Console.Write(">: ");
                 string idVehiculo = Console.ReadLine();
@@ -456,7 +580,14 @@ namespace EmpresaVehiculos
             {
                 Console.WriteLine($"ID: {vehiculo.id} Permiso: {vehiculo.tipoVehiculo}" +
                     $" Precio: {vehiculo.precio}");
+
+                if (vehiculo.tipoVehiculo == "A") { Console.WriteLine($"\tCorrida Extra: {vehiculo.corridaAsientoExtra}\n" +
+                    $"\tMaletero grande: {!vehiculo.corridaAsientoExtra}\n" +
+                    $"\tElectrico: {vehiculo.esElectrico}\n" +
+                    $"\tPosee DVD: {vehiculo.tieneDVD}\n"); }
             }
+
+
             //Console.Write("Enter para continar...");
             //Console.ReadKey();
         }
