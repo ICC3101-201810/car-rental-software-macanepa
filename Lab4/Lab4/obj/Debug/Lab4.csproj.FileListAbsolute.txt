@@ -1,7 +1,0 @@
-C:\Users\ING\Desktop\car-rental-software-macanepa\Lab4\Lab4\obj\Debug\Lab4.csprojResolveAssemblyReference.cache
-C:\Users\ING\Desktop\car-rental-software-macanepa\Lab4\Lab4\obj\Debug\Lab4.csproj.CoreCompileInputs.cache
-C:\Users\ING\Desktop\car-rental-software-macanepa\Lab4\Lab4\bin\Debug\Lab4.exe.config
-C:\Users\ING\Desktop\car-rental-software-macanepa\Lab4\Lab4\bin\Debug\Lab4.exe
-C:\Users\ING\Desktop\car-rental-software-macanepa\Lab4\Lab4\bin\Debug\Lab4.pdb
-C:\Users\ING\Desktop\car-rental-software-macanepa\Lab4\Lab4\obj\Debug\Lab4.exe
-C:\Users\ING\Desktop\car-rental-software-macanepa\Lab4\Lab4\obj\Debug\Lab4.pdb
