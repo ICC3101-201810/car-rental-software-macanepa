@@ -14,17 +14,22 @@ namespace EmpresaVehiculos
         List<Vehiculo> listaVehiculos = new List<Vehiculo>();
         List<Sucursal> listaSucursal = new List<Sucursal>();
         List<Accesorio> listaAccesorios = new List<Accesorio>();
+        List<int> listaIdTransaccion = new List<int>() { 1 };
 
         public void Main()
         {
 
             #region
             Vehiculo vehiculo1 = new Vehiculo("001","A", 1200);
-            Vehiculo vehiculo2 = new Vehiculo("002", "B", 2300);
+            Vehiculo vehiculo2 = new Vehiculo("002", "F", 2300);
+            Vehiculo vehiculo3 = new Vehiculo("003", "B", 2300);
+            Vehiculo vehiculo4 = new Vehiculo("004", "E", 2300);
             Dictionary<Vehiculo, int> diccionarioStock = new Dictionary<Vehiculo, int>
             {
                 {vehiculo1,3 },
-                {vehiculo2,8 }
+                {vehiculo2,8 },
+                {vehiculo3,8 },
+                {vehiculo4,8 }
             };
 
 
@@ -32,15 +37,23 @@ namespace EmpresaVehiculos
                 new List<Vehiculo>() { vehiculo1, vehiculo2 }, diccionarioStock);
 
             Persona persona1 = new Persona("P0001", new List<string> { "B" });
+            Empresa empresa1 = new Empresa("E0001", new List<string> { "F","A","E" });
+
+
+
             Institucion institucion1 = new Institucion("I0001", new List<string> { "A", "B", "C" });
             Accesorio accesorio1 = new Accesorio("A001", 210);
             Accesorio accesorio2 = new Accesorio("A002", 2864);
 
             listaClientes.Add(persona1);
             listaClientes.Add(institucion1);
+            listaClientes.Add(empresa1);
 
             listaVehiculos.Add(vehiculo1);
             listaVehiculos.Add(vehiculo2);
+            listaVehiculos.Add(vehiculo3);
+            listaVehiculos.Add(vehiculo4);
+
 
             listaAccesorios.Add(accesorio1);
             listaAccesorios.Add(accesorio2);
@@ -62,7 +75,7 @@ namespace EmpresaVehiculos
             }
         }
 
-        public Transaccion RealizaTransaccion(Cliente cliente)
+        public void RealizaTransaccion(Cliente cliente)
         {
             Console.Clear();
             int precio = 0;
@@ -109,7 +122,64 @@ namespace EmpresaVehiculos
             bool manejable = cliente.Manejable(vehiculo.tipoVehiculo);
             bool stock = (sucursal.diccionarioStock[vehiculo] > 0);
 
-            int id = 2;
+
+
+
+            if (vehiculo.tipoVehiculo == "F")
+            {
+
+                if ((cliente.GetType() == typeof(Organizacion)) ||
+                    (cliente.GetType() == typeof(Institucion)))
+                {
+                    manejable = false;
+                }
+
+                if (cliente.GetType() == typeof(Empresa))
+                {
+                    if (manejable)
+                    {
+                        double probabilidad = (new Random()).NextDouble();
+                        Console.WriteLine("PROB: " + probabilidad.ToString());
+                        if (!(probabilidad <= 0.63)) { manejable = false; }
+                    }
+                }
+
+            }
+
+
+            if (vehiculo.tipoVehiculo == "E")
+            {
+                if (cliente.GetType() == typeof(Persona))
+                {
+                    manejable = false;
+                    Console.WriteLine("Persona No puede Arrendar!");
+                }
+
+                if ((cliente.GetType() == typeof(Empresa)) ||
+                    (cliente.GetType() == typeof(Organizacion)) ||
+                    (cliente.GetType() == typeof(Institucion)))
+                {
+                    double probabilidad = (new Random()).NextDouble();
+                    if ((cliente.GetType() == typeof(Empresa)))
+                    {
+                        if (!(probabilidad <= 0.8)) { manejable = false; Console.WriteLine("SHIT!!"); }
+                    }
+                    if ((cliente.GetType() == typeof(Organizacion)))
+                    {
+                        if (!(probabilidad <= 0.35)) { manejable = false; }
+                    }
+                    if ((cliente.GetType() == typeof(Institucion)))
+                    {
+                        if (!(probabilidad <= 0.58)) { manejable = false; }
+                    }
+                    Console.WriteLine("Probabilidad " + probabilidad.ToString());
+                }
+            }
+
+
+
+
+            int id = listaIdTransaccion.Count+1;
 
             if (manejable && stock)
             {
@@ -117,11 +187,11 @@ namespace EmpresaVehiculos
                     vehiculo, sucursal, listaAccesorioArrendar,precio,tiempoArriendo);
 
                 listaTransacciones.Add(transaccion);
+                listaIdTransaccion.Add(id);
                 Console.WriteLine("Transaccion Exitosa!...");
-                Console.WriteLine(transaccion.id + transaccion.id);
                 ImprimirTransacciones();
                 Console.ReadKey();
-                return transaccion;
+                //return transaccion;
 
             }
             else
@@ -131,7 +201,7 @@ namespace EmpresaVehiculos
 
                 Console.WriteLine("Transaccion Fallida!...");
                 Console.ReadKey();
-                return transaccion;
+                //return transaccion;
             }
 
         }
@@ -179,7 +249,7 @@ namespace EmpresaVehiculos
                     goto inicioOP1;
                 }
 
-                listaTransacciones.Add(RealizaTransaccion(cliente));
+                RealizaTransaccion(cliente);
 
 
 

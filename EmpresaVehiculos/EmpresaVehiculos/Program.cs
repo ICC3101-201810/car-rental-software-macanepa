@@ -12,7 +12,17 @@ namespace EmpresaVehiculos
         {
             Menu menu = new Menu();
             menu.Main();
-            
+
+
+
+            /*Los Tipos de vehiculo son:
+                A => Auto
+                B => Acuatico
+                C => Moto
+                D => Camion
+                E => Bus
+                F => Maquinaria*/
+
         }
     }
 }

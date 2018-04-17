@@ -44,10 +44,12 @@
   <ItemGroup>
     <Compile Include="Accesorio.cs" />
     <Compile Include="Cliente.cs" />
+    <Compile Include="Empresa.cs" />
     <Compile Include="Institucion.cs" />
     <Compile Include="IImprimible.cs" />
     <Compile Include="IOperable.cs" />
     <Compile Include="Menu.cs" />
+    <Compile Include="Organizacion.cs" />
     <Compile Include="Persona.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
