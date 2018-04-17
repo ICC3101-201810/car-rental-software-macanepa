@@ -260,6 +260,13 @@ namespace EmpresaVehiculos
             if(op == 3) { CrearVehiculo(); }
 
 
+            if (op == 4) { CrearAccesorio(); }
+            if (op == 5) { CrearSucursal(); }
+
+
+
+
+
             if (op == 6)
             {
                 Imprimir();
@@ -273,10 +280,12 @@ namespace EmpresaVehiculos
             Console.WriteLine("--Crear nuevo cliente--\n");
             Console.Write("Tipo Ciente:\n" +
                 "\t(1) Persona\n" +
-                "\t(2) Institucion\n\n" +
+                "\t(2) Institucion\n" +
+                "\t(3) Empresa\n" +
+                "\t(4) Organizacion\n" +
                 "\t>: ");
 
-            List<int> opciones = new List<int>() { 1, 2 };
+            List<int> opciones = new List<int>() { 1, 2, 3, 4 };
             int tipoCliente = 0;
             try
             {
@@ -304,13 +313,26 @@ namespace EmpresaVehiculos
                 listaClientes.Add(cliente);
             }
 
-            else if (tipoCliente == 2) { Institucion cliente = new Institucion(id, listaPermisos);
+            else if (tipoCliente == 2)
+            {
+                Institucion cliente = new Institucion(id, listaPermisos);
+                listaClientes.Add(cliente);
+            }
+            else if (tipoCliente == 3)
+            {
+                Empresa cliente = new Empresa(id, listaPermisos);
+                listaClientes.Add(cliente);
+            }
+            else if (tipoCliente == 4)
+            {
+                Organizacion cliente = new Organizacion(id, listaPermisos);
                 listaClientes.Add(cliente);
             }
 
 
 
-            
+
+
             return;
         }
         public void CrearVehiculo()
@@ -331,6 +353,55 @@ namespace EmpresaVehiculos
             return;
 
         }
+        public void CrearAccesorio()
+        {
+            Console.WriteLine("--Crear nuevo Accesorio--\n");
+            Console.Write("\nID Accesorio >: ");
+            string id = Console.ReadLine();
+
+            Console.Write("Precio >: ");
+            int precio = Convert.ToInt32(Console.ReadLine());
+
+            listaAccesorios.Add(new Accesorio(id, precio));
+            Console.WriteLine("Accesorio Añadido Exitosamente");
+            return;
+        }
+
+
+        public void CrearSucursal()
+        {
+            Console.WriteLine("--Crear nueva Sucursal--\n");
+            Console.Write("\nID Sucursal >: ");
+            string id = Console.ReadLine();
+
+
+            ImprimirVehiculos();
+
+            List<Vehiculo> listaVehiculosSucursal = new List<Vehiculo>();
+            Console.WriteLine("Introduce ID Vehiculo: ");
+            Dictionary<Vehiculo, int> dictVehiculoStock = new Dictionary<Vehiculo, int>();
+
+            while (true)
+            {
+                errorVehiculo:
+                Console.Write(">: ");
+                string idVehiculo = Console.ReadLine();
+                if (idVehiculo == "0") { break; }
+                Vehiculo vehiculo = listaVehiculos.Find(x => x.id == idVehiculo);
+                if (vehiculo == null) { Console.WriteLine("Invalido, Introduce nuevamente"); goto errorVehiculo; }
+                listaVehiculosSucursal.Add(vehiculo);
+                Console.Write("Introduce Stock >: ");
+                int cant = Convert.ToInt32(Console.ReadLine());
+                dictVehiculoStock.Add(vehiculo, cant);
+            }
+
+
+            listaSucursal.Add(new Sucursal(id, listaVehiculosSucursal, dictVehiculoStock));
+            
+            return;
+        }
+
+
 
 
         public void Imprimir()
@@ -340,6 +411,7 @@ namespace EmpresaVehiculos
                 "\t(1) Clientes\n" +
                 "\t(2) Vehiculos\n" +
                 "\t(3) Transacciones\n" +
+                "\t(4) Sucursales\n" +
                 "");
             Console.Write("opcion >: ");
             string opcion = Console.ReadLine();
@@ -347,6 +419,7 @@ namespace EmpresaVehiculos
             if (opcion == "1") { ImprimirClientes(); }
             else if (opcion == "2") { ImprimirVehiculos(); }
             else if (opcion == "3") { ImprimirTransacciones(); }
+            else if (opcion == "4") { ImprimirSucursales(); }
 
 
         }
