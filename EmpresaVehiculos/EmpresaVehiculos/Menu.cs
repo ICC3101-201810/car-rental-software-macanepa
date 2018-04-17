@@ -302,7 +302,7 @@ namespace EmpresaVehiculos
 
         public void CommandInterface()
         {
-            List<int> opcionesValidas = new List<int>() { 1, 2, 3, 4, 5, 6 };
+            List<int> opcionesValidas = new List<int>() { 1, 2, 3, 4, 5, 6 ,7};
             //Console.Clear();
             Console.WriteLine("--Menu de Gestión--\n");
             Console.WriteLine("Selecciones:\n\n" +
@@ -311,9 +311,12 @@ namespace EmpresaVehiculos
                 "\t(3) Crear Vehiculo\n" +
                 "\t(4) Crear Accesorio\n" +
                 "\t(5) Crear Sucursal\n" +
-                "\t(6) Mostrar Informacion\n");
+                "\t(6) Mostrar Informacion\n" +
+                "\t(7) Salir\n");
 
             Console.Write("\t>: ");
+
+          
 
             int op = 0;
 
@@ -364,6 +367,11 @@ namespace EmpresaVehiculos
             {
                 Imprimir();
             }
+
+            if (op == 7) { Environment.Exit(0); }
+
+
+
 
 
         }
@@ -536,6 +544,7 @@ namespace EmpresaVehiculos
                 "\t(2) Vehiculos\n" +
                 "\t(3) Transacciones\n" +
                 "\t(4) Sucursales\n" +
+                "\t(5) Accesorios\n" +
                 "");
             Console.Write("opcion >: ");
             string opcion = Console.ReadLine();
@@ -544,6 +553,7 @@ namespace EmpresaVehiculos
             else if (opcion == "2") { ImprimirVehiculos(); }
             else if (opcion == "3") { ImprimirTransacciones(); }
             else if (opcion == "4") { ImprimirSucursales(); }
+            else if (opcion == "5") { ImprimirAccesorios(); }
 
 
         }
